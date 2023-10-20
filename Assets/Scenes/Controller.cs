@@ -1,28 +1,30 @@
-
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Controller : MonoBehaviour
 {
-    [SerializeField] private Button _servicePlay;
+    [SerializeField] private Button _loadSceneBtn;
+    [SerializeField] private Button _debugBtn;
+    [SerializeField] private string _sceneName;
 
     private ISceneService _sceneService;
-    // Start is called before the first frame update
-    private void Start()
+
+    private void Awake()
     {
-        _servicePlay.onClick.AddListener(ServicePlayClickHandler);
+        _loadSceneBtn.onClick.AddListener(LoadSceneClickHandler);
+        _debugBtn.onClick.AddListener(DebugClickHandler);
+
         _sceneService = new SceneService();
         ServiceLocator.Instance.RegisterService<ISceneService>(_sceneService);
     }
 
-    private void ServicePlayClickHandler()
+    private void LoadSceneClickHandler()
     {
-        
+        _sceneService.LoadingScene(_sceneName);
     }
 
-    // Update is called once per frame
-    private void Update()
+    private void DebugClickHandler()
     {
-        
+        _sceneService.PrintSceneName();
     }
 }

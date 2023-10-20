@@ -1,11 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SceneService : ISceneService
 {
-    public void PrintValue()
+    public void LoadingScene(string sceneName)
     {
-        Debug.Log("Print Value :)");
+        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+    }
+
+    public void PrintSceneName()
+    {
+        Debug.Log($"This active scene Name is: {SceneManager.GetActiveScene().name}");
     }
 }

@@ -4,5 +4,6 @@ using UnityEngine;
 
 public interface ISceneService
 {
-    public void PrintValue();
+    public void LoadingScene(string sceneName);
+    public void PrintSceneName();
 }
