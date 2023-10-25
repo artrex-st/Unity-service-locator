@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,8 +15,7 @@ public class Controller : MonoBehaviour
         _loadSceneBtn.onClick.AddListener(LoadSceneClickHandler);
         _debugBtn.onClick.AddListener(DebugClickHandler);
 
-        _sceneService = new SceneService();
-        ServiceLocator.Instance.RegisterService<ISceneService>(_sceneService);
+        _sceneService = ServiceLocator.Instance.GetService<ISceneService>();
     }
 
     private void LoadSceneClickHandler()
