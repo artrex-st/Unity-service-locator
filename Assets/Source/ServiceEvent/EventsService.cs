@@ -1,41 +1,44 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class EventsService : MonoBehaviour, IEventsService
+public class EventsService : IEventsService
 {
-    private Dictionary<string, List<Action<object>>> eventSubscribers;
+    private readonly Dictionary<Type, List<object>> eventListeners = new Dictionary<Type, List<object>>();
 
-    public EventsService()
+    public void Subscribe<T>(Action<T> callback) where T : IEvent
     {
-        eventSubscribers = new Dictionary<string, List<Action<object>>>();
-    }
+        Type eventType = typeof(T);
 
-    public void SubscribeEvent(string eventName, Action<object> callback)
-    {
-        if (!eventSubscribers.ContainsKey(eventName))
+        if (!eventListeners.ContainsKey(eventType))
         {
-            eventSubscribers[eventName] = new List<Action<object>>();
+            eventListeners[eventType] = new List<object>();
         }
 
-        eventSubscribers[eventName].Add(callback);
+        eventListeners[eventType].Add(callback);
     }
 
-    public void UnsubscribeEvent(string eventName, Action<object> callback)
+    public void Unsubscribe<T>(Action<T> callback) where T : IEvent
     {
-        if (eventSubscribers.ContainsKey(eventName))
+        Type eventType = typeof(T);
+
+        if (eventListeners.ContainsKey(eventType))
         {
-            eventSubscribers[eventName].Remove(callback);
+            eventListeners[eventType].Remove(callback);
         }
     }
 
-    public void InvokeEvent(string eventName, object eventData)
+    public void Invoke<T>(T eventData) where T : IEvent
     {
-        if (eventSubscribers.ContainsKey(eventName))
+        Type eventType = typeof(T);
+
+        if (eventListeners.ContainsKey(eventType))
         {
-            foreach (var callback in eventSubscribers[eventName])
+            foreach (object handler in eventListeners[eventType])
             {
-                callback.Invoke(eventData);
+                if (handler is Action<T> castedHandler)
+                {
+                    castedHandler.Invoke(eventData);
+                }
             }
         }
     }

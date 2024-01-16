@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class EventManager : MonoBehaviour
 {
     [SerializeField] private Button _debugEventButton;
+    [SerializeField] private string _eventText;
     private IEventsService _eventsService;
 
     private void Start()
@@ -17,6 +18,6 @@ public class EventManager : MonoBehaviour
 
     private void DebugEventClickHandler()
     {
-        _eventsService.InvokeEvent("Debug", null);
+        _eventsService.Invoke(new RequestStringEvent(_eventText));
     }
 }

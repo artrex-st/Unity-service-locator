@@ -3,6 +3,16 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+public readonly struct RequestStringEvent : IEvent
+{
+    public readonly string StringEvent;
+
+    public RequestStringEvent(string stringEvent)
+    {
+        StringEvent = stringEvent;
+    }
+}
+
 public class Controller : MonoBehaviour
 {
     [SerializeField] private Button _loadSceneBtn;
@@ -19,17 +29,17 @@ public class Controller : MonoBehaviour
 
         _sceneService = ServiceLocator.Instance.GetService<ISceneService>();
         _eventsService = ServiceLocator.Instance.GetService<IEventsService>();
-        _eventsService.SubscribeEvent("Debug", CallbackDebugEvent);
+        _eventsService.Subscribe<RequestStringEvent>(HandleStringEvent);
     }
 
     private void OnDestroy()
     {
-        _eventsService.UnsubscribeEvent("Debug", CallbackDebugEvent);
+        _eventsService.Unsubscribe<RequestStringEvent>(HandleStringEvent);
     }
 
-    private void CallbackDebugEvent(object obj)
+    private void HandleStringEvent(RequestStringEvent obj)
     {
-        Debug.Log($"Event Callback from scene: {SceneManager.GetActiveScene().name}");
+        Debug.Log($"Event Callback from scene: {SceneManager.GetActiveScene().name}, Event Text: {obj.StringEvent}");
     }
 
     private void LoadSceneClickHandler()
