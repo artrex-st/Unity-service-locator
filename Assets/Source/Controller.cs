@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Controller : MonoBehaviour
@@ -9,6 +10,7 @@ public class Controller : MonoBehaviour
     [SerializeField] private string _sceneName;
 
     private ISceneService _sceneService;
+    private IEventsService _eventsService;
 
     private void Awake()
     {
@@ -16,6 +18,18 @@ public class Controller : MonoBehaviour
         _debugBtn.onClick.AddListener(DebugClickHandler);
 
         _sceneService = ServiceLocator.Instance.GetService<ISceneService>();
+        _eventsService = ServiceLocator.Instance.GetService<IEventsService>();
+        _eventsService.SubscribeEvent("Debug", CallbackDebugEvent);
+    }
+
+    private void OnDestroy()
+    {
+        _eventsService.UnsubscribeEvent("Debug", CallbackDebugEvent);
+    }
+
+    private void CallbackDebugEvent(object obj)
+    {
+        Debug.Log($"Event Callback from scene: {SceneManager.GetActiveScene().name}");
     }
 
     private void LoadSceneClickHandler()
