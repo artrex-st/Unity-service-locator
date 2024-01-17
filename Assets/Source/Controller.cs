@@ -7,7 +7,9 @@ public class Controller : MonoBehaviour
 {
     [SerializeField] private Button _loadSceneBtn;
     [SerializeField] private Button _debugBtn;
+    [SerializeField] private Button _settingsBtn;
     [SerializeField] private string _sceneName;
+    private string _settingsScene = "SettingsMenuPopUp";
 
     private ISceneService _sceneService;
     private ISaveDataService _saveDataService;
@@ -16,10 +18,15 @@ public class Controller : MonoBehaviour
     {
         _loadSceneBtn.onClick.AddListener(LoadSceneClickHandler);
         _debugBtn.onClick.AddListener(DebugClickHandler);
+        _settingsBtn.onClick.AddListener(SettingsClickHandler);
 
         _sceneService = ServiceLocator.Instance.GetService<ISceneService>();
         _saveDataService = ServiceLocator.Instance.GetService<ISaveDataService>();
-        Debug.Log($"Load MasterVolume: {_saveDataService.GameData.MasterVolume}");
+    }
+
+    private void SettingsClickHandler()
+    {
+        _sceneService.LoadingSceneAdditiveAsync(_settingsScene);
     }
 
     private void LoadSceneClickHandler()
@@ -30,9 +37,7 @@ public class Controller : MonoBehaviour
     private void DebugClickHandler()
     {
         _sceneService.PrintSceneName();
-        float newFloat = UnityEngine.Random.Range(0, 100) / 100f;
-        Debug.Log($"New MasterVolume: {newFloat}");
-        _saveDataService.GameData.MasterVolume = newFloat;
+        Debug.Log($"MasterVolume: {_saveDataService.GameData.MasterVolume}, MusicVolume: {_saveDataService.GameData.MusicVolume}");
         _saveDataService.SaveGame();
     }
 }
