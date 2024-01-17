@@ -5,5 +5,7 @@ using UnityEngine;
 public interface ISceneService
 {
     public void LoadingScene(string sceneName);
+    public void LoadingSceneAdditiveAsync(string sceneName);
+    public void UnLoadAdditiveSceneAsync();
     public void PrintSceneName();
 }
