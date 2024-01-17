@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = ("New SoundLibrary"), menuName = ("Sound/Library"))]
+[CreateAssetMenu(fileName = ("New SoundLibrary"), menuName = ("Services/SoundLibrary"))]
 public class SoundLibrary : ScriptableObject
 {
     //[FoldoutGroup("Musics")]

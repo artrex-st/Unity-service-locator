@@ -1,7 +1,9 @@
 using DataService;
+using Source;
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public readonly struct RequestStringEvent : IEvent
@@ -19,8 +21,8 @@ public class Controller : MonoBehaviour
     [SerializeField] private Button _loadSceneBtn;
     [SerializeField] private Button _debugBtn;
     [SerializeField] private Button _settingsBtn;
-    [SerializeField] private string _sceneName;
-    private const string SettingsScene = "SettingsMenuPopUp";
+    [SerializeField] private ScreenReference _sceneName;
+    [SerializeField] private ScreenReference _settingsScene;
 
     private ISceneService _sceneService;
     private IEventsService _eventsService;
@@ -46,7 +48,7 @@ public class Controller : MonoBehaviour
 
     private void SettingsClickHandler()
     {
-        _sceneService.LoadingSceneAdditiveAsync(SettingsScene);
+        _sceneService.LoadingSceneAdditiveAsync(_settingsScene);
     }
 
     private void HandleStringEvent(RequestStringEvent obj)

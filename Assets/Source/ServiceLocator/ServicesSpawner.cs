@@ -1,10 +1,11 @@
 using DataService;
+using Source;
 using UnityEngine;
 using UnityEngine.Audio;
 
 public class ServicesSpawner : MonoBehaviour
 {
-    [SerializeField] private string _sceneName;
+    [SerializeField] private ScreenReference _sceneName;
     [Header("Save Data Configuration")]
     [SerializeField] private string _saveDataName = "data.json";
     [SerializeField] private bool _useEncryption = false;
