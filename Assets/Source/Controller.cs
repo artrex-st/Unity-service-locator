@@ -20,7 +20,7 @@ public class Controller : MonoBehaviour
     [SerializeField] private Button _debugBtn;
     [SerializeField] private Button _settingsBtn;
     [SerializeField] private string _sceneName;
-    private string _settingsScene = "SettingsMenuPopUp";
+    private const string SettingsScene = "SettingsMenuPopUp";
 
     private ISceneService _sceneService;
     private IEventsService _eventsService;
@@ -32,20 +32,21 @@ public class Controller : MonoBehaviour
         _debugBtn.onClick.AddListener(DebugClickHandler);
         _settingsBtn.onClick.AddListener(SettingsClickHandler);
 
+        _eventsService = ServiceLocator.Instance.GetService<IEventsService>();
         _sceneService = ServiceLocator.Instance.GetService<ISceneService>();
         _saveDataService = ServiceLocator.Instance.GetService<ISaveDataService>();
-    }
 
-    private void SettingsClickHandler()
-    {
-        _sceneService.LoadingSceneAdditiveAsync(_settingsScene);
-        _eventsService = ServiceLocator.Instance.GetService<IEventsService>();
         _eventsService.Subscribe<RequestStringEvent>(HandleStringEvent);
     }
 
     private void OnDestroy()
     {
         _eventsService.Unsubscribe<RequestStringEvent>(HandleStringEvent);
+    }
+
+    private void SettingsClickHandler()
+    {
+        _sceneService.LoadingSceneAdditiveAsync(SettingsScene);
     }
 
     private void HandleStringEvent(RequestStringEvent obj)

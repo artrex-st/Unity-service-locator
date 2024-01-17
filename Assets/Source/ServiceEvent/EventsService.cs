@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
-public class EventsService : IEventsService
+public class EventsService : MonoBehaviour, IEventsService
 {
     private readonly Dictionary<Type, List<object>> eventListeners = new Dictionary<Type, List<object>>();
 

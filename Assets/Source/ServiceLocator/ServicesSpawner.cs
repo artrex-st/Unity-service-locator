@@ -18,12 +18,10 @@ public class ServicesSpawner : MonoBehaviour
 
     private void Awake()
     {
-        SpawnSaveDataService();
-        SpawnScreenService();
         SpawnEventService();
-        ISceneService sceneService = ServiceLocator.Instance.GetService<ISceneService>();
-        sceneService.LoadingScene(_sceneName);
+        SpawnSaveDataService();
         SpawnSoundService();
+        SpawnScreenService();
     }
 
     private void SpawnScreenService()
@@ -43,11 +41,11 @@ public class ServicesSpawner : MonoBehaviour
         DontDestroyOnLoad(saveDataServiceObject);
 
         SaveDataService saveDataService = saveDataServiceObject.AddComponent<SaveDataService>();
-        ServiceLocator.Instance.RegisterService<ISaveDataService>(saveDataService);
 #if !UNITY_EDITOR
         _useEncryption = true;
 #endif
         saveDataService.Initialize(_saveDataName, _useEncryption);
+        ServiceLocator.Instance.RegisterService<ISaveDataService>(saveDataService);
     }
 
     private void SpawnSoundService()
@@ -62,9 +60,10 @@ public class ServicesSpawner : MonoBehaviour
 
     private void SpawnEventService()
     {
-        GameObject EventServiceObject = new GameObject(nameof(EventsService));
-        DontDestroyOnLoad(EventServiceObject);
-        EventsService eventsService = new EventsService();
+        GameObject eventServiceObject = new GameObject(nameof(EventsService));
+        DontDestroyOnLoad(eventServiceObject);
+
+        EventsService eventsService = eventServiceObject.AddComponent<EventsService>();
         ServiceLocator.Instance.RegisterService<IEventsService>(eventsService);
     }
 }
